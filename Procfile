@@ -1,1 +1,1 @@
-worker: nfl_games_ml_odds.py
+worker: python nfl_games_ml_odds.py
