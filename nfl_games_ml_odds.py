@@ -66,7 +66,7 @@ def call_nfl_games_ml_odds():
         print(f"Error in API request. Status code: {response.status_code}")
 
 # Schedule the script to run every day at 3 PM EST
-schedule.every().day.at("13:50").do(call_nfl_games_ml_odds)
+schedule.every().day.at("14:00").do(call_nfl_games_ml_odds)
 
 # Keep the script running
 while True:
