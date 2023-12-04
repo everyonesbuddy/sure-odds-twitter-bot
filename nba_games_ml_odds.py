@@ -65,7 +65,7 @@ def call_nba_games_ml_odds():
     else:
         print(f"Error in API request. Status code: {response.status_code}")
 
-print("Script finished")
+print("Script nba game ml odds running")
 
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
