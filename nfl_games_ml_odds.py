@@ -65,6 +65,8 @@ def call_nfl_games_ml_odds():
     else:
         print(f"Error in API request. Status code: {response.status_code}")
 
+print("Script finished")
+
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 

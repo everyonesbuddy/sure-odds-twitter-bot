@@ -65,11 +65,13 @@ def call_nba_games_ml_odds():
     else:
         print(f"Error in API request. Status code: {response.status_code}")
 
+print("Script finished")
+
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
 # Schedule the script to run every day at 2:40 PM EST
-schedule.every().day.at("14:47").do(call_nba_games_ml_odds).timezone = est
+schedule.every().day.at("14:52").do(call_nba_games_ml_odds).timezone = est
 
 # Keep the script running
 while True:
