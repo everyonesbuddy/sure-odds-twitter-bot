@@ -70,8 +70,8 @@ print("Script nba game ml odds running")
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
-# Schedule the script to run every day at 2:40 PM EST
-schedule.every().day.at("14:52").do(call_nba_games_ml_odds).timezone = est
+# Schedule the script to run every day at 8:00 AM EST
+schedule.every().day.at("08:00").do(call_nba_games_ml_odds).timezone = est
 
 # Keep the script running
 while True:
