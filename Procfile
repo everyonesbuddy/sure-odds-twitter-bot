@@ -1,8 +1,7 @@
-worker: python nfl_games_ml_odds.py
-worker2: python nba_games_ml_odds.py
-worker3: python nfl_qb_pass_yds_stats.py
-worker4: python nfl_rb_rush_yds_stats.py
-worker5: python nfl_wr_recieving_yds_stats.py
-worker6: python nba_player_points_stats.py
-worker7: python nba_player_assists_stats.py
-worker8: python nba_player_rebounds_stats.py
+worker: python epl_games_ml_odds.py
+worker2: python laliga_games_ml_oddss.py
+worker3: python serie_a_games_ml_odds.py
+worker4: python bundesliga_games_ml_odds.py
+worker5: python epl_player_goals_stats.py
+worker6: python epl_player_assists_stats.py
+worker7: python epl_player_shots_stats.py
