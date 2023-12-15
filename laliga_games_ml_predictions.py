@@ -12,18 +12,17 @@ bearer_token = r"AAAAAAAAAAAAAAAAAAAAAFgGrQEAAAAAcRPWLTcm5Dsd5Q%2F2cYcBSpdHnVo%3
 access_token = "1646168850147295234-Zw5P0wkecRHbXyTqXbT7JJbm264t8F"
 access_token_secret = "gRK0iRZ0akKe7JQOL41xIYRJri9PtbmsTCqkmfEuDXt1V"
 
-
-def call_epl_games_ml_odds():
+def call_laliga_games_ml_predictions():
     # Authenticate with Twitter API
     client = tweepy.Client(bearer_token, api_key, api_secret, access_token, access_token_secret)
     auth = tweepy.OAuth1UserHandler(api_key, api_secret, access_token, access_token_secret)
     api = tweepy.API(auth)
 
-    # OddsAPI EPL (English Premier League) Games API endpoint
-    epl_games_and_odds_api_url = "https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?apiKey=5e7c521ab26381b068424419c586233a&regions=us&markets=h2h&oddsFormat=american&bookmakers=fanduel"
+    # OddsAPI La Liga Games API endpoint
+    laliga_games_and_odds_api_url = "https://api.the-odds-api.com/v4/sports/soccer_spain_la_liga/odds/?apiKey=5e7c521ab26381b068424419c586233a&regions=us&markets=h2h&oddsFormat=american&bookmakers=fanduel"
 
     # Make a request to the API
-    response = requests.get(epl_games_and_odds_api_url)
+    response = requests.get(laliga_games_and_odds_api_url)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
@@ -56,33 +55,35 @@ def call_epl_games_ml_odds():
             away_team_price = team_prices.get(away_team)
             draw_price = team_prices.get('Draw')
 
-            # Create a tweet text
-            tweet_text = (
-                f"⚽ {home_team} vs {away_team}\n"
-                f"📅 Commence Time: {formatted_commence_time}\n"
-                f"  {bookmaker_title} Odds:\n"
-                f"  {home_team} - [{home_team_price}],\n"
-                f"  {away_team} - [{away_team_price}].\n"
-                f"  Draw - [{draw_price}].\n"
-                "#SportsBetting #EPL"
-            )
+            # Call AI API with your Just team data and then recieve response back to be posted
+            ai_api_url = 'https://streamfling-be.herokuapp.com/'
+            ai_prompt = f"You are a soccer handicapper, i will provide you with some data, and you make picks also format the picks for twitter: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Draw: {draw_price}, Commence Time: {formatted_commence_time}."
+            ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
+
+            if ai_response.status_code == 200:
+                ai_data = ai_response.json()
+                ai_prediction = ai_data.get('bot')
+                print(f"AI Prediction: {ai_prediction}")
+                client.create_tweet(text = ai_prediction)
+            else:
+                print(f"Error in AI API request. Status code: {ai_response.status_code}")
 
             # Post the tweet
             # api.update_status(status=tweet_text)
-            client.create_tweet(text = tweet_text)
+            # client.create_tweet(text = tweet_text)
 
-            print(f"Tweet posted for Game {i + 1}: {tweet_text}")
+        #   print(f"Tweet posted for Game {i + 1}: {tweet_text}")
     else:
         print(f"Error in API request. Status code: {response.status_code}")
 
 
-print("Script EPL game ml odds running")
+print("Script LaLiga game ml predictions running")
 
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
-# Schedule the script to run every day at 8 AM EST
-schedule.every().day.at("08:00").do(call_epl_games_ml_odds).timezone = est
+# Schedule the script to run every day at 1 PM EST
+schedule.every().day.at("13:00").do(call_laliga_games_ml_predictions).timezone = est
 
 # Keep the script running
 while True:
