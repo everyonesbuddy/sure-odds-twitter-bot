@@ -61,7 +61,7 @@ def call_epl_games_ml_predictions():
 
             # Call AI API with your Just team data and then recieve response back to be posted
             ai_api_url = 'https://streamfling-be.herokuapp.com/'
-            ai_prompt = f"You are a soccer handicapper, i will provide you with some data, and you make picks also format the picks for twitter: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Draw: {draw_price}, Commence Time: {formatted_commence_time}."
+            ai_prompt = f"You are a soccer handicapper who posts picks on Twitter. I will provide you with some data points which include a team playing, commence time, and odds for teams playing. You will use the data points and make moneyline picks/predictions based on the data points provided. The only data you should include in your posts are your moneyline pick/prediction, the teams playing, and the commence time. Do Not include any data in your post that I did not provide you in the post. Also, do not include full sentences in your post. The post format should be short phrases and bullet points. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Draw: {draw_price}, Commence Time: {formatted_commence_time}."
             ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
 
             if ai_response.status_code == 200:
