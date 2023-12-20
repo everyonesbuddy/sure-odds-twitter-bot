@@ -57,12 +57,13 @@ def call_laliga_games_ml_predictions():
 
             # Call AI API with your Just team data and then recieve response back to be posted
             ai_api_url = 'https://streamfling-be.herokuapp.com/'
-            ai_prompt = f"You are a soccer handicapper who posts picks on Twitter. I will provide you with some data points which include a team playing, commence time, and odds for teams playing. You will use the data points and make moneyline picks/predictions based on the data points provided. The only data you should include in your posts are your moneyline pick/prediction, the teams playing, and the commence time. Do Not include any data in your post that I did not provide you in the post. Also, do not include full sentences in your post. The post format should be short phrases and bullet points. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Draw: {draw_price}, Commence Time: {formatted_commence_time}."
+            ai_prompt = f"You are a professional soccer bettor, that analyses data, and based on that data posts moneyline picks/predictions on Twitter. I will provide you with some data points which include the teams playing, commence time, and odds for teams playing. You will use the data points and make moneyline picks/predictions based on the data points provided. This prediction post should be in a bullet point format that consists of the moneyline pick which includes the teams odd to win, the teams playing, and the commence time as individual bulletpoints. Do Not include any data in your post that I did not provide you in the post. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Draw: {draw_price}, Commence Time: {formatted_commence_time}."
             ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
 
             if ai_response.status_code == 200:
                 ai_data = ai_response.json()
-                ai_prediction = ai_data.get('bot')
+                ai_prediction_object = ai_data.get('bot')
+                ai_prediction = ai_prediction_object.get('content')
                 print(f"AI Prediction: {ai_prediction}")
                 client.create_tweet(text = ai_prediction)
             else:
