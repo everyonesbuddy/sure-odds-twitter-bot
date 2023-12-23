@@ -52,43 +52,54 @@ def nba_player_assists_stats():
 
         formatted_commence_time = commence_time_est.strftime("%a %b %d, %Y %I:%M %p %Z")
 
+        # Extract bookmaker information
+        bookmaker_info = game['bookmakers'][0]
+        bookmaker_title = bookmaker_info['title']
+
+        # Create a dictionary to map team names to their prices
+        team_prices = {outcome['name']: outcome['price'] for outcome in bookmaker_info['markets'][0]['outcomes']}
+
+        # Extract prices using team names
+        home_team_price = team_prices.get(home_team)
+        away_team_price = team_prices.get(away_team)
+
         # Check if home team's NBA Player assists data is available
         home_nba_player_assists_stats = get_nba_player_assists_stats(home_team)
         if home_nba_player_assists_stats:
-            tweet_text = (
-                f"🚨{home_team} Player ({home_nba_player_assists_stats['player']}) Assists:"
-                f"\n Last Game: {home_nba_player_assists_stats['assistsLastGame']},"
-                f"\n 2 Games Ago: {home_nba_player_assists_stats['assistsTwoGamesAgo']},"
-                f"\n 3 Games Ago: {home_nba_player_assists_stats['assistsThreeGamesAgo']},"
-                f"\n 4 Games Ago: {home_nba_player_assists_stats['assistsFourGamesAgo']},"
-                f"\n 5 Games Ago: {home_nba_player_assists_stats['assistsFiveGamesAgo']},"
-                f"\n Avg Last 3 Games: {home_nba_player_assists_stats['avergeLastThree']}"
-                f"\n Szn Avg: {home_nba_player_assists_stats['assistsPerGameCurrentSeason']}"
-                f"\n🏀 Next:  vs {away_team} on {formatted_commence_time}"
-                f"\n🏆#GamblingTwitter"
-            )
-            print(tweet_text)
-            client.create_tweet(text = tweet_text)
+
+            # Call AI API with your team and player data and then recieve response back to be posted
+            ai_api_url = 'https://streamfling-be.herokuapp.com/'
+            ai_prompt = f"You are a professional basketball bettor, that analyses data, and based on that data posts player prop picks/predictions on Twitter. I will provide you with some data points which include the teams playing, commence time, and historical data on a player from one of the teams playing. You will use the data points and make player prop picks/predictions based on the data points provided. This prediction post should be in a bullet point format that consists of the player prop pick, the teams playing, the commence time, the player's last 3 games average, and the player's season average as individual bulletpoints. Do Not include any data in your post that I did not provide you in the post like do not include odds on your player props projections in your post cause we do not have that data. Note do not execed a max of 280 characters on the post. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Commence Time: {formatted_commence_time}. Player ({home_nba_player_assists_stats['player']}) Assists: Last Game: {home_nba_player_assists_stats['assistsLastGame']}, 2 Games Ago: {home_nba_player_assists_stats['assistsTwoGamesAgo']}, 3 Games Ago: {home_nba_player_assists_stats['assistsThreeGamesAgo']}, 4 Games Ago: {home_nba_player_assists_stats['assistsFourGamesAgo']}, 5 Games Ago: {home_nba_player_assists_stats['assistsFiveGamesAgo']}, Avg Last 3 Games: {home_nba_player_assists_stats['avergeLastThree']}, Szn Avg: {home_nba_player_assists_stats['assistsPerGameCurrentSeason']}."
+            ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
+
+            if ai_response.status_code == 200:
+                ai_data = ai_response.json()
+                ai_prediction_object = ai_data.get('bot')
+                ai_prediction = ai_prediction_object.get('content')
+                print(f"AI Prediction: {ai_prediction}")
+                client.create_tweet(text = ai_prediction)
+            else:
+                print(f"Error in AI API request. Status code: {ai_response.status_code}")
         else:
             print(f"No NBA Player assists stats found for {home_team}")
 
         # Check if away team's NBA Player Assists data is available
         away_nba_player_assists_stats = get_nba_player_assists_stats(away_team)
         if away_nba_player_assists_stats:
-            tweet_text = (
-                f"🚨{away_team} Player ({away_nba_player_assists_stats['player']}) Assists:"
-                f"\n Last Game: {away_nba_player_assists_stats['assistsLastGame']},"
-                f"\n 2 Games Ago: {away_nba_player_assists_stats['assistsTwoGamesAgo']},"
-                f"\n 3 Games Ago: {away_nba_player_assists_stats['assistsThreeGamesAgo']},"
-                f"\n 4 Games Ago: {away_nba_player_assists_stats['assistsFourGamesAgo']},"
-                f"\n 5 Games Ago: {away_nba_player_assists_stats['assistsFiveGamesAgo']},"
-                f"\n Avg Last 3 Games: {away_nba_player_assists_stats['avergeLastThree']}"
-                f"\n Szn Avg: {away_nba_player_assists_stats['assistsPerGameCurrentSeason']}"
-                f"\n🏀 Next: vs {home_team} on {formatted_commence_time}"
-                f"\n🏆#GamblingTwitter"
-            )
-            print(tweet_text)
-            client.create_tweet(text = tweet_text)
+
+            # Call AI API with your team and player data and then recieve response back to be posted
+            ai_api_url = 'https://streamfling-be.herokuapp.com/'
+            ai_prompt = f"You are a professional basketball bettor, that analyses data, and based on that data posts player prop picks/predictions on Twitter. I will provide you with some data points which include the teams playing, commence time, and historical data on a player from one of the teams playing. You will use the data points and make player prop picks/predictions based on the data points provided. This prediction post should be in a bullet point format that consists of the player prop pick, the teams playing, the commence time, the player's last 3 games average, and the player's season average as individual bulletpoints. Do Not include any data in your post that I did not provide you in the post like do not include odds on your player props projections in your post cause we do not have that data.Note do not execed a max of 280 characters on the post. Here are the data points. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Commence Time: {formatted_commence_time}. Player ({away_nba_player_assists_stats['player']}) Assists: Last Game: {away_nba_player_assists_stats['assistsLastGame']}, 2 Games Ago: {away_nba_player_assists_stats['assistsTwoGamesAgo']}, 3 Games Ago: {away_nba_player_assists_stats['assistsThreeGamesAgo']}, 4 Games Ago: {away_nba_player_assists_stats['assistsFourGamesAgo']}, 5 Games Ago: {away_nba_player_assists_stats['assistsFiveGamesAgo']}, Avg Last 3 Games: {away_nba_player_assists_stats['avergeLastThree']}, Szn Avg: {away_nba_player_assists_stats['assistsPerGameCurrentSeason']}."
+            ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
+
+            if ai_response.status_code == 200:
+                ai_data = ai_response.json()
+                ai_prediction_object = ai_data.get('bot')
+                ai_prediction = ai_prediction_object.get('content')
+                print(f"AI Prediction: {ai_prediction}")
+                client.create_tweet(text = ai_prediction)
+            else:
+                print(f"Error in AI API request. Status code: {ai_response.status_code}")
         else:
             print(f"No NBA Player assists stats found for {away_team}")
 
@@ -96,7 +107,7 @@ def nba_player_assists_stats():
 est = pytz.timezone('US/Eastern')
 
 # Schedule the script to run every day at 2 PM EST
-schedule.every().day.at("14:00").do(nba_player_assists_stats).timezone = est
+schedule.every().day.at("10:30").do(nba_player_assists_stats).timezone = est
 
 # Keep the script running
 while True:

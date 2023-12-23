@@ -72,9 +72,6 @@ def call_epl_games_ml_predictions():
                 client.create_tweet(text = ai_prediction)
             else:
                 print(f"Error in AI API request. Status code: {ai_response.status_code}")
-
-
-            # print(f"Tweet posted for Game {i + 1}: {ai_prediction}")
     else:
         print(f"Error in API request. Status code: {response.status_code}")
 

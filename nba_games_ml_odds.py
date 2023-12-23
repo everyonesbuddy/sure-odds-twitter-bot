@@ -43,35 +43,38 @@ def call_nba_games_ml_odds():
 
             formatted_commence_time = commence_time_est.strftime("%a %b %d, %Y %I:%M %p %Z")
 
-            bookmaker = game['bookmakers'][0]['title']  # Assuming there's always at least one bookmaker
-            home_team_price = game['bookmakers'][0]['markets'][0]['outcomes'][0]['price']
-            away_team_price = game['bookmakers'][0]['markets'][0]['outcomes'][1]['price']
+            # Extract bookmaker information
+            bookmaker_info = game['bookmakers'][0]
+            bookmaker_title = bookmaker_info['title']
 
-            # Create a tweet text
-            tweet_text = (
-                f"🏀 {home_team} vs {away_team}\n"
-                f"📅 Commence Time: {formatted_commence_time}\n"
-                f"{bookmaker} Odds:\n"
-                f"  {home_team} - [{home_team_price}],\n"
-                f"  {away_team} - [{away_team_price}].\n"
-                "#GamblingTwitter"
-            )
+            # Create a dictionary to map team names to their prices
+            team_prices = {outcome['name']: outcome['price'] for outcome in bookmaker_info['markets'][0]['outcomes']}
 
-            # Post the tweet
-            # api.update_status(status=tweet_text)
-            client.create_tweet(text = tweet_text)
+            # Extract prices using team names
+            home_team_price = team_prices.get(home_team)
+            away_team_price = team_prices.get(away_team)
 
-            print(f"Tweet posted for Game {i + 1}: {tweet_text}")
+            # Call AI API with your Just team data and then recieve response back to be posted
+            ai_api_url = 'https://streamfling-be.herokuapp.com/'
+            ai_prompt = f"You are a professional basketball bettor, that analyses data, and based on that data posts moneyline picks/predictions on Twitter. I will provide you with some data points which include the teams playing, commence time, and odds for teams playing. You will use the data points and make moneyline picks/predictions based on the data points provided. This prediction post should be in a bullet point format that consists of the moneyline pick which includes the teams odd to win, the teams playing, and the commence time as individual bulletpoints. Do Not include any data in your post that I did not provide you in the post. Here are the data points: {home_team} vs {away_team}, {bookmaker_title} Odds - {home_team}: {home_team_price}, {away_team}: {away_team_price}, Commence Time: {formatted_commence_time}."
+            ai_response = requests.post(ai_api_url, json={'prompt': ai_prompt}, headers={'Content-Type': 'application/json'})
+
+            if ai_response.status_code == 200:
+                ai_data = ai_response.json()
+                ai_prediction_object = ai_data.get('bot')
+                ai_prediction = ai_prediction_object.get('content')
+                print(f"AI Prediction: {ai_prediction}")
+                client.create_tweet(text = ai_prediction)
+            else:
+                print(f"Error in AI API request. Status code: {ai_response.status_code}")
     else:
         print(f"Error in API request. Status code: {response.status_code}")
-
-print("Script nba game ml odds running")
 
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
 # Schedule the script to run every day at 8:00 AM EST
-schedule.every().day.at("08:00").do(call_nba_games_ml_odds).timezone = est
+schedule.every().day.at("08:30").do(call_nba_games_ml_odds).timezone = est
 
 # Keep the script running
 while True:
