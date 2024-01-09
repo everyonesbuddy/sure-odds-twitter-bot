@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import discord
 import requests
 from datetime import datetime, timedelta
@@ -7,6 +9,8 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Functions
 #calculate Line movement function
@@ -112,5 +116,4 @@ async def on_message(message):
       await message.channel.send(result)
 
 
-client.run(
-    "MTE5MDcxNjY1NzQ0Mjc2MjgwMg.GM-SWj.er592AlCK3SEcVh4egDWKvdR3BicK0f-bKnK5I")
+client.run(os.getenv("LINE_MOVEMENT_DISCORD_TOKEN"))
