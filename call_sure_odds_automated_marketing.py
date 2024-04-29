@@ -21,14 +21,14 @@ def call_sure_odds_automated_marketing():
     api = tweepy.API(auth)
 
     message = (
-        "Struggling with player prop research? \n\n"
-        "Dive deep into insights and trends on Discord with Sure Odds Research Bot – now FREE!\n\n"
+        "Looking for your next sports betting pick? \n\n"
+        "Try Sure Odd's Research Tools, and find valuable insights.\n\n"
         "💡📊 #PlayerProps #Research #GamblingX\n\n"
         "Add Bot to Discord now: sure-odds.com"
     )
 
     # Path to the image file
-    image_path = "./Sure Odds Before After Marketing.png"
+    image_path = "./iPad-Air-4-discord.com (1).png"
 
     # Upload the image to Twitter
     media = api.media_upload(image_path)
@@ -40,11 +40,14 @@ def call_sure_odds_automated_marketing():
 
     print("Script for posting optimized message on Twitter running")
 
+
+
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
-# Schedule the script to run every day at 10 AM EST
-schedule.every().day.at("10:00").do(call_sure_odds_automated_marketing).timezone = est
+## Schedule the script to run at specific times
+schedule.every().day.at("11:00").do(call_sure_odds_automated_marketing).timezone = est
+schedule.every().day.at("13:00").do(call_sure_odds_automated_marketing).timezone = est
 
 # Keep the script running
 while True:
