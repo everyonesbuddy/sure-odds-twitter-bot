@@ -47,7 +47,6 @@ est = pytz.timezone('US/Eastern')
 
 ## Schedule the script to run at specific times
 schedule.every().day.at("11:00").do(call_sure_odds_automated_marketing).timezone = est
-schedule.every().day.at("13:00").do(call_sure_odds_automated_marketing).timezone = est
 
 # Keep the script running
 while True:

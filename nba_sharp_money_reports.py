@@ -101,9 +101,7 @@ def nba_sharp_money_reports():
 est = pytz.timezone('US/Eastern')
 
 ## Schedule the script to run at specific times
-schedule.every().day.at("10:00").do(nba_sharp_money_reports).timezone = est
-schedule.every().day.at("14:00").do(nba_sharp_money_reports).timezone = est
-schedule.every().day.at("18:00").do(nba_sharp_money_reports).timezone = est
+schedule.every().hour.do(nba_sharp_money_reports).timezone = est
 
 # Keep the script running
 while True:
