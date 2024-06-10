@@ -21,10 +21,10 @@ def call_sure_odds_automated_marketing():
     api = tweepy.API(auth)
 
     message = (
-        "Looking for your next sports betting pick? \n\n"
-        "Try Sure Odd's Research Tools, and find valuable insights.\n\n"
-        "💡📊 #PlayerProps #Research #GamblingX\n\n"
-        "Add Bot to Discord now: sure-odds.com"
+        "Do you own a sports betting server?\n\n"
+        "Want to boost your revenue?\n\n"
+        "We have the tools to help you succeed. Contact us to learn more!\n\n"
+        "💡📊 #PlayerProps #Research #GamblingX"
     )
 
     # Path to the image file
