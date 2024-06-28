@@ -21,9 +21,11 @@ def call_sure_odds_automated_marketing():
     api = tweepy.API(auth)
 
     message = (
-        "Discover Winning Player Props and Public Money Betting Trends!\n\n"
-        "Unlock data-driven insights to enhance your betting strategy. Join now and start making smarter bets.\n\n"
-        "🔍📈 #PlayerProps #BettingInsights #SmartBets"
+        "Transform Your Community with Custom Sports Betting Bots!\n\n"
+        "Do you own a sports betting community or server?\n\n"
+        "Want more users and engaged members?\n\n"
+        "Enhance your community with custom sports betting bots!\n\n"
+        " Contact us today to learn more! #CustomBots #SportsBetting\n\n"
     )
 
     # Path to the image file
