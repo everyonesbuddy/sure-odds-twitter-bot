@@ -21,15 +21,11 @@ def call_sure_odds_automated_marketing():
     api = tweepy.API(auth)
 
     message = (
-        "Transform Your Community with Custom Sports Betting Bots!\n\n"
-        "Do you own a sports betting community or server?\n\n"
-        "Want more users and engaged members?\n\n"
-        "Enhance your community with custom sports betting bots!\n\n"
-        " Contact us today to learn more! #CustomBots #SportsBetting\n\n"
+        "🚀 Tired of losing bets and following unreliable handicappers? Discover Sure Odds and find top experts based on verified performance! Start betting smarter today. 💡🔝 https://sure-odds.com/ #SportsBetting #BettingTips #GamblingTwitter"
     )
 
     # Path to the image file
-    image_path = "./iPad-Air-4-discord.com (1).png"
+    image_path = "./Screenshot 2024-07-28 124520.png"
 
     # Upload the image to Twitter
     media = api.media_upload(image_path)
