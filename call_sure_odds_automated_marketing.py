@@ -21,17 +21,23 @@ def call_sure_odds_automated_marketing():
     api = tweepy.API(auth)
 
     message = (
-        "🚀 Tired of losing bets and following unreliable handicappers? Discover Sure Odds and find top experts based on verified performance! Start betting smarter today. 💡🔝 https://sure-odds.com/ #SportsBetting #BettingTips #GamblingTwitter"
+        "🚀 Boost Your Server with Top Sports Cappers from Sure Odds! 🏆\n"
+        "Enhance your sports Discord with expert insights. Add 10+ top cappers today! 📈\n"
+        "Exclusive Picks: Daily picks from top cappers. 📊\n"
+        "Leaderboard: Real-time rankings. 🥇\n"
+        "https://sure-odds.com/ #SportsBetting #BettingTips #GamblingTwitter"
     )
 
     # Path to the image file
-    image_path = "./Screenshot 2024-07-28 124520.png"
+    image_path1 = "./Screenshot 2024-08-10 015626.png"
+    image_path2 = "./Screenshot 2024-08-10 015737.png"
 
-    # Upload the image to Twitter
-    media = api.media_upload(image_path)
+    # Upload the images to Twitter
+    media1 = api.media_upload(image_path1)
+    media2 = api.media_upload(image_path2)
 
         # Post the message on Twitter
-    client.create_tweet(text=message , media_ids=[media.media_id])
+    client.create_tweet(text=message, media_ids=[media1.media_id, media2.media_id])
     print("Message posted on Twitter.")
     print(message)
 
