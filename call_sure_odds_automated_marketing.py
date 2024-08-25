@@ -118,15 +118,15 @@ def call_sure_odds_automated_marketing():
 
     print("Script for posting optimized message on Twitter running")
 
-call_sure_odds_automated_marketing()
+# call_sure_odds_automated_marketing()
 
-# # Set the Eastern Time (EST) timezone
-# est = pytz.timezone('US/Eastern')
+# Set the Eastern Time (EST) timezone
+est = pytz.timezone('US/Eastern')
 
-# ## Schedule the script to run at specific times
-# schedule.every().day.at("11:00").do(call_sure_odds_automated_marketing).timezone = est
+## Schedule the script to run at specific times
+schedule.every().day.at("11:00").do(call_sure_odds_automated_marketing).timezone = est
 
-# # Keep the script running
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+# Keep the script running
+while True:
+    schedule.run_pending()
+    time.sleep(1)
