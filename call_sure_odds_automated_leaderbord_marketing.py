@@ -67,7 +67,7 @@ def aggregate_handicappers(bets):
 
 
 
-def call_sure_odds_automated_marketing():
+def call_sure_odds_automated_leaderbord_marketing():
     url = "https://sheet.best/api/sheets/b9c7054b-1a70-4afb-9a14-c49967e8faf8"
 
     try:
@@ -118,13 +118,13 @@ def call_sure_odds_automated_marketing():
 
     print("Script for posting optimized message on Twitter running")
 
-# call_sure_odds_automated_marketing()
+# call_sure_odds_automated_leaderbord_marketing()
 
 # Set the Eastern Time (EST) timezone
 est = pytz.timezone('US/Eastern')
 
 ## Schedule the script to run at specific times
-schedule.every().day.at("11:00").do(call_sure_odds_automated_marketing).timezone = est
+schedule.every().day.at("11:00").do(call_sure_odds_automated_leaderbord_marketing).timezone = est
 
 # Keep the script running
 while True:
