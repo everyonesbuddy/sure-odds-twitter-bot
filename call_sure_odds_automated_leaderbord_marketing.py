@@ -81,10 +81,16 @@ def call_sure_odds_automated_leaderbord_marketing():
         top_3 = aggregated_data[:3]
 
         # Construct the message
-        message = "🏆 Weekly Top Cappers/Bettors 🏆\n\n"
+        message = "🏆 Weekly Top Cappers/Tipsters/Model 🏆\n\n"
         for i, capper in enumerate(top_3, start=1):
             username_display = f"@{capper['username']}" if capper['socialType'] == 'twitter' else capper['username']
-            message += f"{i}. {username_display} - Potential Wins: ${capper['potentialWins']:.2f}\n"
+            message += f"{i}. {username_display} - Potential Wins: ${capper['potentialWins']:.2f}\n\n"
+
+        # Add the additional message
+        message += (
+            "Track the success rates of handicappers/Tipsters/models check sure-odds.com\n\n"
+            "#GamblingX"
+        )
 
         print(message)
     except requests.exceptions.RequestException as e:
@@ -124,7 +130,7 @@ def call_sure_odds_automated_leaderbord_marketing():
 est = pytz.timezone('US/Eastern')
 
 ## Schedule the script to run at specific times
-schedule.every().day.at("11:00").do(call_sure_odds_automated_leaderbord_marketing).timezone = est
+schedule.every().day.at("14:00").do(call_sure_odds_automated_leaderbord_marketing).timezone = est
 
 # Keep the script running
 while True:
