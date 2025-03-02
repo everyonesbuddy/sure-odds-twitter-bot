@@ -43,6 +43,78 @@ sport_emojis = {
     "soccer_usa_mls": "⚽"
 }
 
+# List of promo images
+contest_promo_images = [
+    "./contest-marketing-asset-1.png",
+    "./contest-marketing-asset-2.png",
+    "./contest-marketing-asset-3.png"
+]
+
+# Grand Gesture Message Templates (with placeholders)
+grand_gesture_templates = [
+    "🚨 {title} IS LIVE! 🚨\n\n🔥 {total_prize} in prizes! 🔥\nPredict sports for FREE and win BIG 💰\n\nOnly {days_left} days left! ⏳\nSign up now! 👇",
+    "🏆 {title} is here! 🏆\n\n💸 Win your share of {total_prize}! 💸\n\nPredict the right picks for FREE and walk away with real crypto prizes!\n\n⏳ {days_left} days remaining!\nAre you in? 👇",
+    "🔥 Who wants {total_prize}? 🔥\n\nJoin {title} for a shot at HUGE winnings!\n\n💰 It's 100% FREE to enter 💰\nBut hurry—only {days_left} days left! 🕒\n\nWhat’s stopping you? 👇",
+    "🚀 Your chance to win {total_prize}! 🚀\n\nEnter {title} – the ultimate sports prediction contest.\n\n✅ No risk, no fees, just pure winnings! 💰\n⏳ Only {days_left} days left!\n\nWho’s taking home the cash? 👇"
+]
+
+# Contest Options
+contests = [
+    {
+        "title": "March Madness Pick'em",
+        "total_prize": "$500",
+        "end_date": "2025-03-31",
+    },
+    # {
+    #     "title": "NBA Playoffs Pick'em",
+    #     "total_prize": "$5,000",
+    #     "end_date": "2025-06-30",
+    # },
+    # {
+    #     "title": "NFL Season Pick'em",
+    #     "total_prize": "$20,000",
+    #     "end_date": "2025-02-28",
+    # },
+    # {
+    #     "title": "Soccer World Cup Pick'em",
+    #     "total_prize": "$15,000",
+    #     "end_date": "2025-12-31",
+    # }
+]
+
+# Function to calculate days left
+def calculate_days_left(end_date):
+    today = datetime.today().date()
+    contest_end = datetime.strptime(end_date, "%Y-%m-%d").date()
+    days_left = (contest_end - today).days
+    return days_left
+
+# Function to post a grand gesture contest promo
+def post_grand_gesture_promo():
+    selected_contest = random.choice(contests)  # Randomly select a contest
+    message_template = random.choice(grand_gesture_templates)  # Select a random message template
+
+    # Calculate days left
+    days_left = calculate_days_left(selected_contest["end_date"])
+
+    # Format message with contest details
+    message = message_template.format(
+        title=selected_contest["title"],
+        total_prize=selected_contest["total_prize"],
+        days_left=days_left
+    )
+
+    image_path = random.choice(contest_promo_images)  # Select a random image
+
+    media = api.media_upload(image_path)
+    media_id = media.media_id
+
+    # client.create_tweet(text=message, media_ids=[media_id])
+    client.create_tweet(text=message)
+    # print(f"Tweeted: {message} with image {image_path}")
+    print(f"Tweeted: {message}")
+
+
 # Contest Series - Game Matchups & Odds Bot
 def post_game_matchups():
     league_key = random.choice(list(leagues.keys()))
@@ -91,29 +163,11 @@ def post_game_matchups():
     else:
         print("Error fetching odds data")
 
-# Meme & FOMO Content Bot
-def sports_hypotheticals():
-
-    assets = {
-        "Who wins in a 1v1" : "./contest-marketing-asset-4.png",
-        "Pick One to Hit the Game-Winner" : "./contest-marketing-asset-5.png",
-    }
-
-    asset_key = random.choice(list(assets.keys()))
-    image_path = assets[asset_key]
-
-    media = api.media_upload(image_path)
-    media_id = media.media_id
-
-    client.create_tweet(text=asset_key, media_ids=[media_id])
-    print(f"Tweeted: {asset_key} with image {image_path}")
-
 # Schedule Bots
-schedule.every().day.at("10:00").do(post_game_matchups)
-schedule.every(2).days.at("15:00").do(sports_hypotheticals)
+schedule.every().day.at("10:00").do(post_grand_gesture_promo)
+# schedule.every(2).days.at("15:00").do(post_game_matchups)
 
 while True:
     schedule.run_pending()
     time.sleep(1)
-
 
