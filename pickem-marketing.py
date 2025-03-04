@@ -61,9 +61,9 @@ grand_gesture_templates = [
 # Contest Options
 contests = [
     {
-        "title": "March Madness Pick'em",
-        "total_prize": "$500",
-        "end_date": "2025-03-31",
+        "title": "NBA Season Long Pick'em",
+        "total_prize": "$1500",
+        "end_date": "2025-06-30",
     },
     # {
     #     "title": "NBA Playoffs Pick'em",
