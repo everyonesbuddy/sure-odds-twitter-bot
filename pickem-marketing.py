@@ -29,7 +29,8 @@ leagues = {
     # "basketball_ncaab": "NCAA Basketball",
     "soccer_italy_serie_a": "Italian Serie A Soccer",
     "soccer_spain_la_liga": "Spanish La Liga Soccer",
-    "soccer_usa_mls": "USA Major League Soccer"
+    "soccer_usa_mls": "USA Major League Soccer",
+    "icehockey_nhl": "NHL Ice Hockey",
 }
 
 # Dictionary of sport emojis
@@ -40,7 +41,8 @@ sport_emojis = {
     # "basketball_ncaab": "🏀",
     "soccer_italy_serie_a": "⚽",
     "soccer_spain_la_liga": "⚽",
-    "soccer_usa_mls": "⚽"
+    "soccer_usa_mls": "⚽",
+    "icehockey_nhl": "🏒",
 }
 
 # List of promo images
