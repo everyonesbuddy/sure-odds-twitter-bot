@@ -132,13 +132,12 @@ def post_daily_newsletter():
         print(f"❌ Error: {e}")
 
 # Schedule the job
-# schedule.every().day.at("06:00").do(post_daily_newsletter)
+schedule.every().day.at("06:00").do(post_daily_newsletter)
 
-# print("🕒 Newsletter bot started. Waiting for scheduled time...")
+print("🕒 Newsletter bot started. Waiting for scheduled time...")
 
-# # Infinite loop to run the scheduler
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+# Infinite loop to run the scheduler
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
-post_daily_newsletter()
