@@ -14,7 +14,6 @@ DOCUMENT_TITLE = "Sure-Odds Daily Newsletter"
 
 # Leagues & Emojis
 leagues = {
-    # "basketball_nba": "NBA Basketball",
     "soccer_epl": "English Premier League",
     "soccer_germany_bundesliga": "German Bundesliga",
     "soccer_italy_serie_a": "Italian Serie A",
@@ -24,7 +23,6 @@ leagues = {
 }
 
 sport_emojis = {
-    # "basketball_nba": "🏀",
     "soccer_epl": "⚽",
     "soccer_germany_bundesliga": "⚽",
     "soccer_italy_serie_a": "⚽",
@@ -41,10 +39,25 @@ contest_info = {
 }
 
 intro_templates = [
-    "🔥 **Keep your streak alive and climb the leaderboard!** 🔥\n\nCompete in the **{title}** for your shot at **{total_prize}** in FREE prizes this **{duration}**!",
-    "🏆 **Ready to go on a hot streak?**\n\nJoin the **{title}** and predict winners daily. The longer your streak, the bigger your prize!",
-    "💸 **Free to enter. Real cash up for grabs.**\n\nStart your streak today in the **{title}** and win up to **{total_prize}** this **{duration}**!",
+    "🎯 **Everyone says they’re the best at betting. Let’s find out who actually is.**\n\nEnter the **{title}** and go on a streak to win your share of **{total_prize}** — free to play, real prizes, every **{duration}**.",
+    "😤 **Tired of fake betting experts?**\n\nHere’s your chance to prove you're the real deal.\n\nJoin the **{title}** — hit a streak, climb the leaderboard, and win up to **{total_prize}** this **{duration}**.",
+    "🧠 **Think you're sharp? Prove it.**\n\nThe **{title}** pays the best streaks — no entry fee, no gimmicks. Just your picks. Just skill.\n\nPlay now to win **{total_prize}** in prizes **{duration}**.",
+    "💰 **The game is simple:**\nMake correct picks. Build your streak. Win real money.\n\nJoin the **{title}** and compete for **{total_prize}** this **{duration}**.\n\nFREE to enter — only skill matters.",
+    "📊 **Prove you're not just talk.**\n\nJoin the **{title}** and let your picks speak.\n\nGo on a heater, win up to **{total_prize}** — no cost to enter. Your streak is your resume."
 ]
+
+subject_line_templates = [
+    "🔥 Ready to build your betting streak?",
+    "⚽ Today’s matchup + $500 up for grabs!",
+    "💸 Win up to $500 in this week’s contest!",
+    "🎯 One pick. One streak. Real prizes.",
+    "📈 Are you hot or not? Start your streak today.",
+    "🧠 Let your betting skills pay off this week!",
+    "💥 Predict winners. Win prizes. Repeat."
+]
+
+def get_subject_line():
+    return random.choice(subject_line_templates)
 
 def get_featured_matchup():
     league_key = random.choice(list(leagues.keys()))
@@ -71,11 +84,13 @@ def get_featured_matchup():
 
     return f"{emoji} **{home} vs {away}** – *{league_name}*\n\n💰 Odds: {odds_line}"
 
-def build_newsletter():
+def build_newsletter(subject_line):
     date_str = datetime.now().strftime("%A, %B %d, %Y")
     intro = random.choice(intro_templates).format(**contest_info)
 
-    return f"""# 📅 {date_str} | Sure-Odds Streak Contest
+    return f"""📬 **Suggested Email Subject:** _{subject_line}_
+
+# 📅 {date_str} | Sure-Odds Streak Contest
 
 ---
 
@@ -110,7 +125,6 @@ def push_to_google_doc(markdown_text):
     doc = service.documents().create(body={"title": DOCUMENT_TITLE}).execute()
     doc_id = doc['documentId']
 
-    # Insert Markdown text (plain for now)
     service.documents().batchUpdate(documentId=doc_id, body={
         'requests': [{
             'insertText': {
@@ -122,22 +136,15 @@ def push_to_google_doc(markdown_text):
 
     print(f"✅ Newsletter sent to Google Docs: https://docs.google.com/document/d/{doc_id}/edit")
 
-# Function to run the full task
 def post_daily_newsletter():
     try:
         print("🚀 Building newsletter...")
-        newsletter = build_newsletter()
+        subject_line = get_subject_line()
+        newsletter = build_newsletter(subject_line)
         push_to_google_doc(newsletter)
+        print(f"📬 Suggested Subject: \"{subject_line}\"")
     except Exception as e:
         print(f"❌ Error: {e}")
 
-# Schedule the job
-schedule.every().day.at("06:00").do(post_daily_newsletter)
-
-print("🕒 Newsletter bot started. Waiting for scheduled time...")
-
-# Infinite loop to run the scheduler
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-
+# Run the task
+post_daily_newsletter()

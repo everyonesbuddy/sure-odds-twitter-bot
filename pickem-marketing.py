@@ -54,12 +54,17 @@ contest_promo_images = [
 
 # Grand Gesture Message Templates (with placeholders)
 grand_gesture_templates = [
-    "Win up to {total_prize} {duration}!\n\nJoin the {title} and show off your sports prediction skills!\n\n💸 It’s FREE to enter! 💸\n\nAre you ready to win? 👇",
-    "🏆 {title} is underway!\n\nCompete for a share of {total_prize} {duration}.\n\nIt's 100% FREE to play – bring your A-game and win big! 🤑\n\nReady to dominate? 👇",
-    "💥 Ready to cash in on your sports knowledge?\n\nEnter the {title} and win up to {total_prize} {duration}!\n\nFREE to enter. Real cash prizes. 💸\n\nLet’s go! 👇",
-    "🎯 Predict. Play. Win.\n\nJoin the {title} for your shot at {total_prize} in FREE prizes {duration}!\n\nBragging rights + real rewards 👇",
-    "🔥 Want to turn predictions into prizes?\n\nCompete in the {title} for a chance at {total_prize} {duration}!\n\nFREE to enter. Easy to win. 💰\n\nJump in 👇",
+    "💡 Everyone *claims* they're the best at sports betting...\n\nWe're calling the bluff. Show your skills in the {title}.\n\n🏆 {total_prize} in real prizes {duration}. FREE to play. No excuses.\n\nAre you the best? Prove it",
+
+    "🔥 No cap, no scams — just streaks.\n\nJoin the {title} and show you’re a real sports bettor.\n\n💰 {total_prize} in cash prizes {duration}.\n🎟️ Free entry. Let’s see what you got",
+
+    "😤 Tired of fake betting gurus?\n\nJoin the {title} and **prove you're legit**.\n\nWin up to {total_prize} {duration} — completely FREE.\n\nNo bankroll. Just streaks. Just skill",
+
+    "🧠 Think you're sharp?\n🏆 Join the {title} and go on a win streak to claim your share of {total_prize} {duration}.\n\nNo entry fees. Just your picks. Just your skill",
+
+    "📈 No more shouting. Just streaks.\n\nCompete in the {title} to show you’re the best at predicting games.\n\n💵 Real cash ({total_prize}) paid out {duration}.\n\nFree to enter. Real stakes.",
 ]
+
 
 
 # Contest Options
