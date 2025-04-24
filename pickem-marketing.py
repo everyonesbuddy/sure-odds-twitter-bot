@@ -155,7 +155,7 @@ def post_game_matchups():
 
 # Schedule Bots
 schedule.every().day.at("10:00").do(post_grand_gesture_promo)
-schedule.every().day.at("10:00").do(post_grand_gesture_promo)
+schedule.every().day.at("12:00").do(post_grand_gesture_promo)
 schedule.every(2).days.at("15:00").do(post_game_matchups)
 
 while True:
