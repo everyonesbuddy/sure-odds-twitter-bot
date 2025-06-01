@@ -14,17 +14,21 @@ DOCUMENT_TITLE = "Sure-Odds Daily Newsletter"
 
 # Leagues & Emojis
 leagues = {
-    "soccer_epl": "English Premier League",
-    "soccer_germany_bundesliga": "German Bundesliga",
-    "soccer_italy_serie_a": "Italian Serie A",
-    "soccer_spain_la_liga": "Spanish La Liga",
-    "soccer_usa_mls": "MLS",
-    "icehockey_nhl": "NHL Hockey",
+    "basketball_nba": "NBA Basketball",
+    "soccer_epl": "English Premier League Soccer",
+    "soccer_germany_bundesliga": "German Bundesliga Soccer",
+    # "basketball_ncaab": "NCAA Basketball",
+    "soccer_italy_serie_a": "Italian Serie A Soccer",
+    "soccer_spain_la_liga": "Spanish La Liga Soccer",
+    "soccer_usa_mls": "USA Major League Soccer",
+    "icehockey_nhl": "NHL Ice Hockey",
 }
 
 sport_emojis = {
+    "basketball_nba": "🏀",
     "soccer_epl": "⚽",
     "soccer_germany_bundesliga": "⚽",
+    # "basketball_ncaab": "🏀",
     "soccer_italy_serie_a": "⚽",
     "soccer_spain_la_liga": "⚽",
     "soccer_usa_mls": "⚽",
@@ -39,12 +43,15 @@ contest_info = {
 }
 
 intro_templates = [
-    "🎯 **Everyone says they’re the best at betting. Let’s find out who actually is.**\n\nEnter the **{title}** and go on a streak to win your share of **{total_prize}** — free to play, real prizes, every **{duration}**.",
-    "😤 **Tired of fake betting experts?**\n\nHere’s your chance to prove you're the real deal.\n\nJoin the **{title}** — hit a streak, climb the leaderboard, and win up to **{total_prize}** this **{duration}**.",
-    "🧠 **Think you're sharp? Prove it.**\n\nThe **{title}** pays the best streaks — no entry fee, no gimmicks. Just your picks. Just skill.\n\nPlay now to win **{total_prize}** in prizes **{duration}**.",
-    "💰 **The game is simple:**\nMake correct picks. Build your streak. Win real money.\n\nJoin the **{title}** and compete for **{total_prize}** this **{duration}**.\n\nFREE to enter — only skill matters.",
-    "📊 **Prove you're not just talk.**\n\nJoin the **{title}** and let your picks speak.\n\nGo on a heater, win up to **{total_prize}** — no cost to enter. Your streak is your resume."
+    "💸 **Make picks. Go on a streak. Win real money — without betting a dime.**\n\nThe **{title}** pays the best pickers **{total_prize}** every **{duration}**. It’s not gambling. It’s skill. Are you streak-worthy?",
+
+    "🤑 **No bets. No fees. Just your picks.**\n\nThe **{title}** gives away **{total_prize}** each **{duration}** to users who can go on the hottest streak. All free, all real. Start your run today.",
+
+    "🔥 **Streak to the top and win real cash — free.**\n\nIn the **{title}**, the best streak wins. Just make correct picks. Win real prizes. No risk, no cost. Just results.",
+
+    "🎯 **The challenge is simple: pick winners every day. The reward? Real cash.**\n\nJoin the **{title}**, build your streak, and grab your share of **{total_prize}**. 100% free to enter.",
 ]
+
 
 subject_line_templates = [
     "🔥 Ready to build your betting streak?",
@@ -84,9 +91,32 @@ def get_featured_matchup():
 
     return f"{emoji} **{home} vs {away}** – *{league_name}*\n\n💰 Odds: {odds_line}"
 
+def get_our_pick():
+    league_key = random.choice(list(leagues.keys()))
+    url = f"https://api.the-odds-api.com/v4/sports/{league_key}/odds/?apiKey=402f2e4bba957e5e98c7e1a178393c8c&regions=us&markets=h2h&oddsFormat=american&bookmakers=fanduel"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return "⚠️ Could not fetch our pick today."
+
+    data = response.json()
+    if not data:
+        return "⚠️ No picks available right now."
+
+    game = data[0]
+    home = game['home_team']
+    away = game['away_team']
+    outcomes = game['bookmakers'][0]['markets'][0]['outcomes']
+    pick = random.choice([home, away] + (["Draw"] if any(o["name"] == "Draw" for o in outcomes) else []))
+
+    return f"📌 **Our Pick Today:** {pick} – based on current odds & form."
+
+
 def build_newsletter(subject_line):
     date_str = datetime.now().strftime("%A, %B %d, %Y")
     intro = random.choice(intro_templates).format(**contest_info)
+    featured = get_featured_matchup()
+    our_pick = get_our_pick()
 
     return f"""📬 **Suggested Email Subject:** _{subject_line}_
 
@@ -100,7 +130,13 @@ def build_newsletter(subject_line):
 
 ## 🎯 Today's Featured Matchup
 
-{get_featured_matchup()}
+{featured}
+
+---
+
+## ✅ Our Pick
+
+{our_pick}
 
 ---
 

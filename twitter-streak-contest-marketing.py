@@ -52,17 +52,19 @@ contest_promo_images = [
     "./contest-marketing-asset-3.png"
 ]
 
-# Grand Gesture Message Templates (with placeholders)
-grand_gesture_templates = [
-    "💡 Everyone *claims* they're the best at sports betting...\n\nWe're calling the bluff. Show your skills in the {title}.\n\n🏆 {total_prize} in real prizes {duration}. FREE to play. No excuses.\n\nAre you the best? Prove it",
+# Steak Contest Message Templates (with placeholders)
+streak_contest_templates = [
+    "💸 Most ways to profit from sports picks require betting. Not here.\n\nJust make free picks, hit a streak, and win 💰 in the {title}.\n\n🏆 {total_prize} up for grabs {duration}. No entry. No catch.",
 
-    "🔥 No cap, no scams — just streaks.\n\nJoin the {title} and show you’re a real sports bettor.\n\n💰 {total_prize} in cash prizes {duration}.\n🎟️ Free entry. Let’s see what you got",
+    "📣 Tired of risking your money on bets?\n\nSkip the wagers. Make picks for FREE in the {title}.\n\n🏆 Hit a streak. Win up to {total_prize} {duration}. Real cash. No fees.",
 
-    "😤 Tired of fake betting gurus?\n\nJoin the {title} and **prove you're legit**.\n\nWin up to {total_prize} {duration} — completely FREE.\n\nNo bankroll. Just streaks. Just skill",
+    "🎯 Think you’re sharp at picking games?\n\nTry it risk-free.\n\nJoin the {title}. Hit a hot streak. Win {total_prize} {duration}.\n\nNo gambling. No entry fees. Just you vs the games.",
 
-    "🧠 Think you're sharp?\n🏆 Join the {title} and go on a win streak to claim your share of {total_prize} {duration}.\n\nNo entry fees. Just your picks. Just your skill",
+    "🤔 Why risk your money when you can earn for FREE?\n\nMake your picks in the {title}. Get hot. Win cash.\n\n💰 {total_prize} in real prizes {duration}. Free to enter. No BS.",
 
-    "📈 No more shouting. Just streaks.\n\nCompete in the {title} to show you’re the best at predicting games.\n\n💵 Real cash ({total_prize}) paid out {duration}.\n\nFree to enter. Real stakes.",
+    "🧢 Betting without risk is finally real.\n\nJoin the {title}, go on a win streak, and win up to {total_prize} {duration}.\n\nNo entry fees. No wagers. Just you and your picks.",
+
+    "🔥 Predict games. Build your streak. Win real money.\n\nThe {title} is 100% free to enter.\n\n💵 {total_prize} paid out {duration}.\n\nNo betting. Just skill.",
 ]
 
 
@@ -74,17 +76,17 @@ contests = [
         "total_prize": "$500",
         "duration": "Weekly",
     },
-    # {
-    #     "title": "Monthly Streaks Contest",
-    #     "total_prize": "$2000",
-    #     "duration": "Monthly",
-    # },
+    {
+        "title": "Monthly Streaks Contest",
+        "total_prize": "$2000",
+        "duration": "Monthly",
+    },
 ]
 
 # Function to post a grand gesture contest promo
-def post_grand_gesture_promo():
+def post_streak_contest_promo():
     selected_contest = random.choice(contests)  # Randomly select a contest
-    message_template = random.choice(grand_gesture_templates)  # Select a random message template
+    message_template = random.choice(streak_contest_templates)  # Select a random message template
 
     # Format message with contest details
     message = message_template.format(
@@ -105,7 +107,7 @@ def post_grand_gesture_promo():
 
 
 # Contest Series - Game Matchups & Odds Bot
-def post_game_matchups():
+def post_matchday_pick():
     league_key = random.choice(list(leagues.keys()))
     league_name = leagues[league_key]
     sport_emoji = sport_emojis[league_key]
@@ -115,48 +117,54 @@ def post_game_matchups():
 
     if response.status_code == 200:
         odds_data = response.json()
-        for game in odds_data[:1]:  # Limit to first 1 games
+        for game in odds_data[:1]:  # Limit to first 1 game
             home_team = game['home_team']
             away_team = game['away_team']
-            print(f"game: {game}")
-
             team_prices = {outcome['name']: outcome['price'] for outcome in game['bookmakers'][0]['markets'][0]['outcomes']}
-            print(f"team_prices: {team_prices}")
+
             home_team_price = team_prices.get(home_team)
             away_team_price = team_prices.get(away_team)
             draw_price = team_prices.get('Draw') if 'Draw' in team_prices else None
 
+            # Suggest a pick (randomly between home/away or draw if available)
+            pick_options = [home_team, away_team]
+            if draw_price:
+                pick_options.append("Draw")
+            suggested_pick = random.choice(pick_options)
+
+            # Build the message
             if draw_price:
                 message = (
-                     f"🔥 PREDICT & WIN! 🔥\n"
-                     f"{sport_emoji} {home_team} vs. {away_team} – {league_name}\n\n"
-                     f"💰 Odds: {home_team} ({home_team_price}) | {away_team} ({away_team_price}) | Draw ({draw_price})\n\n"
-                     f"Make your pick and win up to $500 weekly\n\n"
+                    f"🔥 PREDICT & WIN 🔥\n"
+                    f"{sport_emoji} {home_team} vs. {away_team} – {league_name}\n"
+                    f"💰 Odds: {home_team} ({home_team_price}) | {away_team} ({away_team_price}) | Draw ({draw_price})\n\n"
+                    f"Our pick: **{suggested_pick}**\n\n"
+                    f"Make your own pick FREE. Hit a streak. Win real 💵.\n"
+                    f"🏆 $500 weekly. No entry. No betting. Just skill.\n\n"
                 )
             else:
                 message = (
-                    f"🔥 PREDICT & WIN! 🔥\n"
-                    f"{sport_emoji} {home_team} vs. {away_team} – {league_name}\n\n"
+                    f"🔥 PREDICT & WIN 🔥\n"
+                    f"{sport_emoji} {home_team} vs. {away_team} – {league_name}\n"
                     f"💰 Odds: {home_team} ({home_team_price}) | {away_team} ({away_team_price})\n\n"
-                    f"Make your pick and win up to $500 weekly\n\n"
+                    f"Our pick: **{suggested_pick}**\n\n"
+                    f"Make your own pick FREE. Hit a streak. Win real 💵.\n"
+                    f"🏆 $500 weekly. No entry. No betting. Just skill.\n\n"
                 )
 
-            # Select a random image
             image_path = random.choice(contestPromoImages)
             media = api.media_upload(image_path)
             media_id = media.media_id
 
-            # client.create_tweet(text=message, media_ids=[media_id])
             client.create_tweet(text=message)
-            # print(f"Tweeted: {message} with image {image_path}")
             print(f"Tweeted: {message}")
     else:
         print("Error fetching odds data")
 
 # Schedule Bots
-schedule.every().day.at("10:00").do(post_grand_gesture_promo)
-schedule.every().day.at("12:00").do(post_grand_gesture_promo)
-schedule.every(2).days.at("15:00").do(post_game_matchups)
+schedule.every().day.at("10:00").do(post_streak_contest_promo)
+schedule.every().day.at("12:00").do(post_streak_contest_promo)
+schedule.every(2).days.at("15:00").do(post_matchday_pick)
 
 while True:
     schedule.run_pending()

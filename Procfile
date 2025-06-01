@@ -1,1 +1,1 @@
-worker: python pickem-marketing.py
+worker: python twitter-streak-contest-marketing.py
