@@ -155,10 +155,10 @@ def post_contest_promo():
 
 # Schedule Bots
 # schedule.every().day.at("12:00").do(post_contest_promo)
-# schedule.every(6).hours.do(post_contest_promo)
+schedule.every(6).hours.do(post_contest_promo)
 
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
-post_contest_promo()
+# post_contest_promo()
