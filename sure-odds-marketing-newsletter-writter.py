@@ -30,7 +30,7 @@ end_date = end_of_week.replace(hour=23, minute=59, second=59, microsecond=0).str
 
 contests = [
     {
-        "title": "Weekly ATS Streaks",
+        "title": "Weekly WNBA Streak",
         "total_prize": "$100",
         "duration": "Weekly",
         "start_date": start_date,
@@ -38,9 +38,9 @@ contests = [
         "url": "https://sure-odds.com/",
     },
     # {
-    #     "title": "Monthly ATS Streaks",
-    #     "total_prize": "$250",
-    #     "duration": "Monthly",
+    #     "title": ""Weekly MLB Streak",
+    #     "total_prize": "$100",
+    #     "duration": "Weekly",
     #     "start_date": start_date,
     #     "end_date": end_date,
     #     "url": "https://sure-odds.com/",

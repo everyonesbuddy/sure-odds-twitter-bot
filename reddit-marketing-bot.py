@@ -23,7 +23,7 @@ end_date = end_of_week.replace(hour=23, minute=59, second=59, microsecond=0).str
 
 contests = [
     {
-        "title": "Weekly ATS Streaks",
+        "title": "Weekly WNBA Streak",
         "prize": "$100",
         "duration": "weekly",
         "start_date": start_date,
@@ -31,12 +31,12 @@ contests = [
         "expected_streak": 5
     },
     # {
-    #     "title": "Monthly ATS Streaks",
-    #     "prize": "$250",
-    #     "duration": "monthly",
+    #     "title": ""Weekly MLB Streak",
+    #     "prize": "$100",
+    #     "duration": "weekly",
     #     "start_date": start_date,
     #     "end_date": end_date,
-    #     "expected_streak": 15
+    #     "expected_streak": 5
     # }
 ]
 

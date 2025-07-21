@@ -36,23 +36,25 @@ end_date = end_of_week.replace(hour=23, minute=59, second=59, microsecond=0).str
 # === Contest Configuration ===
 contests = [
     {
-        "title": "Weekly ATS Streaks",
+        "title": "Weekly WNBA Streak",
         "prize": "$100",
         "duration": "weekly",
         "start_date": start_date,
         "end_date": end_date,
         "expected_streak": 5,
         "images": [
-            "./weekly-streak.jpg",
+            "./wnba-streak.png",
         ]
     },
     # {
-    #     "title": "Monthly ATS Streaks",
-    #     "prize": "$250",
-    #     "duration": "monthly",
-    #     "expected_streak": 15,
+    #     "title": "Weekly MLB Streak",
+    #     "prize": "$100",
+    #     "duration": "weekly",
+    #     "start_date": start_date,
+    #     "end_date": end_date,
+    #     "expected_streak": 5,
     #     "images": [
-    #         "./monthly-streak.jpg",
+    #         "./mlb-streak.jpg",
     #     ]
     # }
 ]
