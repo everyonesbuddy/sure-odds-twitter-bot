@@ -1,1 +1,1 @@
-worker: python twitter-streak-contest-marketing.py
+worker: python twitter-sure-odds-contest-marketing.py
