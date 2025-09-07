@@ -13,4 +13,5 @@ urllib3==2.1.0
 google-auth
 google-auth-oauthlib
 google-api-python-client
+python-dotenv==1.0.0
 
