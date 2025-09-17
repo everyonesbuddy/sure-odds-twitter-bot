@@ -64,6 +64,7 @@ contests = [
         "end_date": end_of_week_str,
         "contest_format": "streak",
         "win_conditions": "Hit 6 correct picks in a row",
+        "entry_fee": 0,
         "images": ["./assets/weekly-multi-sport-streak-poster.png"]
     },
     {
@@ -74,6 +75,7 @@ contests = [
         "end_date": "2026-05-24 23:59:59",
         "contest_format": "pickem",
         "win_conditions": "Have the most correct picks this EPL season",
+        "entry_fee": 4.99,
         "images": ["./assets/epl-season-long-contest.png"]
     },
     {
@@ -84,6 +86,7 @@ contests = [
         "end_date": end_of_month_str,
         "contest_format": "streak",
         "win_conditions": "Hit 12 correct picks in a row",
+        "entry_fee": 0,
         "images": ["./assets/monthly-multi-sport-streak-poster.png"]
     }
 ]
@@ -91,16 +94,17 @@ contests = [
 # === Message Templates ===
 templates = {
     "streak": [
-        "🎯 {win_conditions} in our {title} and win {prize}!\nFREE to enter. Contest runs {start_date} to {end_date}. Only {days_left} days left to join!",
-        "🔥 {title} is live! {win_conditions}. FREE entry!\nContest ends {end_date}. {days_left} days left — join now!",
-        "🏆 Can you achieve it? {win_conditions} in this {duration} streak contest.\nWin {prize}. FREE entry. Contest closes {end_date}."
+        "🎯 {win_conditions} in our {title} and win {prize}!\n{entry_text}. Contest runs {start_date} to {end_date}. Only {days_left} days left to join!",
+        "🔥 {title} is live! {win_conditions}. {entry_text}!\nContest ends {end_date}. {days_left} days left — join now!",
+        "🏆 Can you achieve it? {win_conditions} in this {duration} streak contest.\nWin {prize}. {entry_text}. Contest closes {end_date}."
     ],
     "pickem": [
-        "🎯 {win_conditions} in our {title} and win {prize}!\nFREE to enter. Contest runs {start_date} to {end_date}. Only {days_left} days left to join!",
-        "🔥 {title} is live! {win_conditions}. FREE entry!\nContest ends {end_date}. {days_left} days remaining — don’t miss out!",
-        "🏆 Be the top predictor! {win_conditions} in this {duration} Pick'em.\nWin {prize}. FREE entry. Contest closes {end_date}."
+        "🎯 {win_conditions} in our {title} and win {prize}!\n{entry_text}. Contest runs {start_date} to {end_date}. Only {days_left} days left to join!",
+        "🔥 {title} is live! {win_conditions}. {entry_text}!\nContest ends {end_date}. {days_left} days remaining — don’t miss out!",
+        "🏆 Be the top predictor! {win_conditions} in this {duration} Pick'em.\nWin {prize}. {entry_text}. Contest closes {end_date}."
     ]
 }
+
 
 # === Trivia, Polls, Fun Facts, Betting Tips ===
 trivia_questions = [
@@ -189,6 +193,10 @@ def post_contest_promo():
     start_date_obj = datetime.strptime(contest["start_date"], "%Y-%m-%d %H:%M:%S")
     end_date_obj = datetime.strptime(contest["end_date"], "%Y-%m-%d %H:%M:%S")
     days_left = (end_date_obj - datetime.now()).days
+
+    # Build entry text
+    entry_text = "FREE entry" if contest["entry_fee"] == 0 else f"Entry Fee: ${contest['entry_fee']}"
+
     template = random.choice(templates.get(contest["contest_format"], templates["streak"]))
     tweet = template.format(
         title=contest["title"],
@@ -197,8 +205,10 @@ def post_contest_promo():
         win_conditions=contest["win_conditions"],
         start_date=start_date_obj.strftime("%Y-%m-%d"),
         end_date=end_date_obj.strftime("%Y-%m-%d"),
-        days_left=days_left
+        days_left=days_left,
+        entry_text=entry_text
     )
+
     image_path = random.choice(contest["images"])
     media = api.media_upload(image_path)
     client.create_tweet(text=tweet, media_ids=[media.media_id])
